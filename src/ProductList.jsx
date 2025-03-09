@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import './ProductList.css';
 import CartItem from './CartItem';
 import { addItem } from './CartSlice';
 function ProductList({ onHomeClick }) {
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.items);
   const [showCart, setShowCart] = useState(false);
   const [addedToCart, setAddedToCart] = useState({});
 
@@ -294,6 +297,10 @@ function ProductList({ onHomeClick }) {
     }));
   };
 
+  const getTotalQuantity = () => {
+    return cartItems.reduce((total, item) => total + item.quantity, 0);
+  };
+
   const handleContinueShopping = (e) => {
     e.preventDefault();
     setShowCart(false);
@@ -346,6 +353,7 @@ function ProductList({ onHomeClick }) {
                     id="mainIconPathAttribute"
                   ></path>
                 </svg>
+                <span>{getTotalQuantity()}</span>
               </h1>
             </a>
           </div>
